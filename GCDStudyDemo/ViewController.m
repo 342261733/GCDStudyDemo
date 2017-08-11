@@ -33,7 +33,7 @@
 //    [self testBarrier];// 调度障碍:并发可以同时多线程同时开始，barrier可以控制多线程顺序结束。
 //    [self testGroup];// 调度 组
 //    [self testApply];
-    [self testSource];
+    // [self testSource];
 //    [self testSerialQueue]; // 串行
 //    [self testParallel];// 并行
 //    
@@ -55,7 +55,22 @@
     // **** NSThread ****
     
 //    [self testNSThread];
+    
+    // [self testThreadLock];
 
+}
+
+- (void)testThreadLock {
+    dispatch_queue_t queue = dispatch_queue_create("com.demo.serialQueue", DISPATCH_QUEUE_SERIAL);
+    NSLog(@"1"); // 任务1
+    dispatch_async(queue, ^{
+        NSLog(@"2"); // 任务2
+        dispatch_sync(queue, ^{
+            NSLog(@"3"); // 任务3
+        });
+        NSLog(@"4"); // 任务4
+    });
+    NSLog(@"5"); // 任务5
 }
 
 #pragma mark - GCD
